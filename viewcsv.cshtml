@@ -1,0 +1,47 @@
+﻿@{
+var dataFile = Server.MapPath("~/appdata/TextFile.txt");
+Array userData = File.ReadAllLines(dataFile);
+}
+
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+
+      
+@{
+if (IsPost)
+
+         {
+     
+                <h1>Reading Data from a File</h1>
+
+
+               foreach (string dataLine in userData)
+                {
+                   foreach (string dataItem in dataLine .Split (',') )
+                   {
+                       @dataItem<text>&nbsp;</text>
+                   }
+
+                }
+         }
+else
+            {
+                <form method="post" action="">
+                <input type="submit" value="Submit" class="submit">
+                 </form> 
+            }
+ }
+    </body>
+</html>

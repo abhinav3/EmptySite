@@ -1,0 +1,370 @@
+jglhf,
+dfg,
+
+f,
+eFK,
+DFG,
+'ghjfh,ghkjhf
+FD,
+,dffaf
+'
+
+#include "bst.h"
+#include "node.h"
+Btree::Btree()
+{
+
+    root=NULL;
+    nodecount=0;
+}
+Btree::~Btree(){}
+Node* Btree::search_Node(Node* rootNode,int searchdigit)
+{
+    if(rootNode==NULL)
+        return(NULL);
+    if(searchdigit==rootNode->getDigit())
+        return(rootNode);
+
+    else if(searchdigit<rootNode->getDigit() &&rootNode->getLeftChild())
+    {
+        search_Node(rootNode->getLeftChild(),searchdigit);
+    }
+    else if(searchdigit>rootNode->getDigit() && rootNode->getRightChild())
+        {
+            search_Node(rootNode->getRightChild(),searchdigit);
+        }
+
+}
+bool Btree::inorder_traversal(Node* rootNode)
+{
+
+    if(rootNode==NULL)
+        return false;
+    else {if(rootNode->getLeftChild())
+        inorder_traversal(rootNode->getLeftChild());
+    cout<<" "<<rootNode->getDigit()<<" ";
+    if(rootNode->getRightChild())
+    inorder_traversal(rootNode->getRightChild());    return true;}
+}
+bool Btree::Treeinorder()
+{
+    return(inorder_traversal(root));
+}
+bool Btree::preorder_traversal(Node* rootNode)
+{
+
+     if(rootNode==NULL)
+        return false;
+    else
+    {cout<<" "<<rootNode->getDigit()<<" ";
+    if(rootNode->getLeftChild())
+        preorder_traversal(rootNode->getLeftChild());
+    if(rootNode->getRightChild())
+        preorder_traversal(rootNode->getRightChild());
+    return true;}
+}
+bool Btree::Treepreorder()
+{
+    return(preorder_traversal(root));
+}
+bool Btree::postorder_traversal(Node* rootNode)
+{
+    if(rootNode==NULL)
+        return false;
+    else
+    {if(rootNode->getLeftChild())
+        postorder_traversal(rootNode->getLeftChild());
+       if(rootNode->getRightChild())
+        postorder_traversal(rootNode->getRightChild());
+    cout<<" "<<rootNode->getDigit()<<" ";
+    return true;}
+}
+bool Btree::Treepostorder()
+{
+    return(postorder_traversal(root));
+}
+Node* Btree::find_MAX(Node* rootNode)
+{
+
+        if(rootNode==NULL || rootNode->getRightChild()==NULL)
+        return(rootNode);
+     else
+            find_MAX(rootNode->getRightChild());
+}
+Node* Btree::Getmax()
+{
+    return(find_MAX(root));
+}
+Node* find_min(Node* rootNode)
+{
+
+    if(rootNode==NULL || rootNode->getLeftChild()==NULL)
+        return(rootNode);
+    else
+        find_min(rootNode->getLeftChild());
+
+}
+/*Node* Btree::Getmin()
+{
+    return(find_min(root));
+}*/
+
+
+
+Node* Btree::find_predecessor(Node* gNode)
+{
+
+
+    if(gNode==NULL || (gNode==root && gNode->getLeftChild()==NULL ))
+        return(NULL);
+    else if(gNode->getLeftChild())
+    {
+
+       return(find_MAX(gNode->getLeftChild()));
+
+        }
+    else if(gNode->getLeftChild()==NULL )
+    {
+        Node* prnt=gNode->getParent();
+        if(gNode==prnt->getRightChild())
+            return(prnt);
+        else
+            {
+                Node* temp=prnt->getParent();
+                while(temp!=NULL)
+                {
+                    if(temp->getRightChild()==prnt)
+                        return(temp);
+                    temp=temp->getParent();
+                    prnt=prnt->getParent();
+
+                }
+                if(temp==NULL)
+                    return(NULL);
+
+
+            }
+    }
+}
+Node* Btree::find_successor(Node* gNode)
+{
+
+
+    if(gNode==NULL || (gNode==root &&  gNode->getRightChild()==NULL))
+        return(NULL);
+        if(gNode->getRightChild()!=NULL)
+        {
+            return(find_min(gNode->getRightChild()));
+        }
+        else
+        {
+            Node* prnt=gNode->getParent();
+            if(gNode==prnt->getLeftChild())
+                return(prnt);
+            Node* temp=prnt->getParent();
+            while(temp!=NULL)
+            {
+                if(prnt==temp->getLeftChild())
+                    return(temp);
+                temp=temp->getParent();
+                prnt=prnt->getParent();
+
+            }
+            if(temp==NULL)
+                return(NULL);
+        }
+
+}
+bool Btree::Insert(Node* rootNode,Node* newNode)
+
+{
+
+
+    if(rootNode==NULL)
+    {
+         rootNode=newNode;nodecount++;
+    return true;
+
+    }
+
+    if(newNode->getDigit()>rootNode->getDigit())
+    {
+        if(rootNode->getRightChild()==NULL)
+        {
+           rootNode->setRightChild(newNode);
+           newNode->setParent(rootNode);nodecount++;
+                      return true;
+        }
+    else
+
+         Insert(rootNode->getRightChild(),newNode);
+    }
+
+    else if(rootNode->getDigit()>newNode->getDigit())
+
+    {
+        if(rootNode->getLeftChild()==NULL)
+        {
+
+
+            rootNode->setLeftChild(newNode);
+            newNode->setParent(rootNode);nodecount++;
+            return true;
+        }
+        else
+
+        Insert(rootNode->getLeftChild(),newNode);
+    }
+    else
+    {cout<<"Duplicates can't be inserted"<<endl;return false;}
+
+}
+bool Btree::Tree_insert(Node* newNode)
+{
+    return (Insert(root,newNode));
+}
+bool Btree::delete_Node(Node* vNode)
+{
+    Node* prnt=NULL;
+    Node* r=NULL;
+    Node* rr=NULL;
+    Node* r1=NULL;
+    Node* l=NULL;
+
+    if(root==NULL || vNode==NULL)
+        return NULL;
+    else if(vNode->getLeftChild()==NULL && vNode->getRightChild()==NULL)
+    {
+        if(vNode==root)
+            return root;
+        else
+        {
+            prnt=vNode->getParent();
+            vNode->setParent(NULL);
+            if(vNode->getRightChild()==vNode)
+                prnt->setRightChild(NULL);
+            else
+                prnt->setLeftChild(NULL);
+                return vNode;
+        } nodecount--;
+    }
+    else if(vNode->getRightChild()==NULL && vNode->getLeftChild())
+
+        {
+            l=vNode->getParent();
+            if(vNode==root)
+              {
+                  vNode->setLeftChild(NULL);
+                  l->setParent(NULL);root=l;
+                  return vNode;
+
+              }
+              else
+              {
+                  prnt=vNode->getParent();
+                  vNode->setLeftChild(NULL);
+                  l->setParent(prnt);
+                  if(prnt->getLeftChild()==vNode)
+                    prnt->setLeftChild(l);
+                  else
+                    prnt->setRightChild(l);
+                  vNode->setParent(NULL);
+                  return vNode;
+              } nodecount--;
+            }
+            else if(vNode->getRightChild() && vNode->getLeftChild()==NULL)
+            {
+                r=vNode->getRightChild();
+                if(vNode==root)
+                {
+                    vNode->setRightChild(NULL);
+                    r->setParent(NULL);
+                    root=r;
+                    return vNode;
+                }
+                else
+                    {
+                        prnt=vNode->getParent();
+                        r->setParent(prnt);
+                        vNode->setRightChild(NULL);
+                        if(prnt->getLeftChild()==vNode)
+                            prnt->setLeftChild(r);
+                        else
+                            prnt->setRightChild(r);
+                        return vNode;
+                    } nodecount--;
+            }
+            else if(vNode->getLeftChild() && vNode->getRightChild())
+            {
+                l=vNode->getLeftChild();
+                r=vNode->getRightChild();
+                r1=r;
+                while(r->getLeftChild())
+                {
+                    r=r->getLeftChild();
+                }
+
+                if(r!=r1){
+                    Node* p1=r->getParent();
+                        if(r->getRightChild()){
+
+                         rr=r->getRightChild();
+                         rr->setParent(p1);
+                         if(p1->getRightChild()==r)
+                            p1->setRightChild(rr);
+                         else
+                            p1->setLeftChild(rr);
+                            r->setParent(NULL);
+                        }
+                        if(vNode==root)
+                        {
+                            root=r;
+                        }
+                        else
+                        {
+                            prnt=vNode->getParent();
+                            r->setParent(prnt);
+                            if(prnt->getLeftChild()==vNode)
+                                prnt->setLeftChild(r);
+                            else
+                                prnt->setRightChild(r);
+                           vNode->setParent(NULL);
+
+                        }
+                        r->setLeftChild(l);
+                        l->setParent(r);
+                        r->setRightChild(r1);
+                        r1->setParent(r);
+
+
+                }
+                else
+                {
+                    if(vNode==root)
+                    {
+                        r->setLeftChild(l);
+                        r->setParent(NULL);
+                        l->setParent(r);
+                        root=r;
+                    }
+                    else
+                        {
+                            prnt=vNode->getParent();
+                            l->setParent(r);
+                            r->setLeftChild(l);
+                            r->setParent(prnt);
+                            if(prnt->getLeftChild()==vNode)
+                                prnt->setLeftChild(r);
+                            else
+                                prnt->setRightChild(r);
+                                vNode->setParent(NULL);
+                        }
+                }
+
+
+                nodecount--;
+
+            }
+
+}
+
