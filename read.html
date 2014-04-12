@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>File read demo</title>
+       
+
+    </head>
+    <body>
+        <img src=" ../EmptySite/scripts/jquery-ui-1.10.4.custom/face.jpg" alt=" lkhjds"/>
+        <button onclick="playVid()" type="button">Play Video</button>
+<button onclick="pauseVid()" type="button">Pause Video</button> 
+<video   onmouseover="pauseVid()" onmouseout="playVid()"></video>
+<br> 
+<br> 
+<video id="video1">
+  
+        <source src="../EmptySite/scripts/jquery-ui-1.10.4.custom/a.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+       
+<script> 
+var myVideo=document.getElementById("video1"); 
+
+function playVid()
+  { 
+  myVideo.play(); 
+  } 
+
+function pauseVid()
+  { 
+  myVideo.pause(); 
+
+  } 
+</script> 
+     <!--  <object data="TextFile.txt" type="text/plain"
+width="500" style="height: 300px">
+<a href="TextFile.txt">No Support?</a>
+</object>-->
+    </body>
+</html>

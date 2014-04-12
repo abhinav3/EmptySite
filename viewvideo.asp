@@ -16,7 +16,7 @@
   
 
 
- <source src="~/video/hair.mp4" type="video/mp4">
+ <source src=" ../EmptySite/scripts/jquery-ui-1.10.4.custom/a.mp4"  type="video/mp4">
   Your browser does not support HTML5 video.
 </video>
 

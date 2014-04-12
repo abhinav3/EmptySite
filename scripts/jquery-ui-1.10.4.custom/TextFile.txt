@@ -1,0 +1,47 @@
+jglhf,
+dfg,
+
+f,
+eFK,
+DFG,
+'ghjfh,ghkjhf
+FD,
+,dffaf
+'
+#include "bst.h"
+#include "node.h"
+Btree::Btree()
+{
+
+    root=NULL;
+    nodecount=0;
+}
+Btree::~Btree(){}
+Node* Btree::search_Node(Node* rootNode,int searchdigit)
+{
+    if(rootNode==NULL)
+        return(NULL);
+    if(searchdigit==rootNode->getDigit())
+        return(rootNode);
+
+    else if(searchdigit<rootNode->getDigit() &&rootNode->getLeftChild())
+    {
+        search_Node(rootNode->getLeftChild(),searchdigit);
+    }
+    else if(searchdigit>rootNode->getDigit() && rootNode->getRightChild())
+        {
+            search_Node(rootNode->getRightChild(),searchdigit);
+        }
+
+}
+bool Btree::inorder_traversal(Node* rootNode)
+{
+
+    if(rootNode==NULL)
+        return false;
+    else {if(rootNode->getLeftChild())
+        inorder_traversal(rootNode->getLeftChild());
+    cout<<" "<<rootNode->getDigit()<<" ";
+    if(rootNode->getRightChild())
+    inorder_traversal(rootNode->getRightChild());    return true;}
+}
